@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  nestjs:
+    image: node:18
+    container_name: nestjs
+    ports:
+      - '6001:6001'
+    volumes:
+      - ./:/back
+      - /back/node_modules
+    working_dir: /back
+    command: >
+      sh -c "
+      npm install &&
+      npm run build &&
+      npm run start:prod
+      "
