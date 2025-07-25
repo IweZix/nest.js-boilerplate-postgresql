@@ -3,11 +3,18 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { writeFileSync } from 'fs';
+import { MyLogger } from './common/logger.service';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const logger = new Logger('main');
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new MyLogger(),
+  });
+
+  app.useGlobalFilters(new HttpExceptionFilter(new MyLogger));
+
   app.enableCors({
     origin: ['http://localhost:3000'],
     allowedHeaders: ['Content-Type', 'Authorization'],
