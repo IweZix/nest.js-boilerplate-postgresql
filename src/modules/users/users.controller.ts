@@ -15,6 +15,8 @@ import { LoginUserDTO } from './DTO/loginUser.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { ThrottlerName } from 'src/constants/throttler-name';
 
 @ApiTags('Users')
 @Controller('users')
@@ -35,6 +37,7 @@ export class UsersController {
    */
   @Post('register')
   @HttpCode(201)
+  @Throttle({ [ThrottlerName.SHORT]: {} })
   @ApiOperation({
     summary: 'Registers a new user by validating the received user data',
   })
@@ -52,6 +55,7 @@ export class UsersController {
     status: 409,
     description: 'Conflict: User with the same email already exists',
   })
+  @ApiResponse({ status: 429, description: 'Too Many Requests' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async register(
     @Body(new ValidationPipe()) userDTO: ReceivedUserDTO,
@@ -68,6 +72,7 @@ export class UsersController {
    */
   @Post('login')
   @HttpCode(200)
+  @Throttle({ [ThrottlerName.SHORT]: {} })
   @ApiOperation({
     summary: 'Logs in a user by verifying the email and password',
   })
@@ -82,6 +87,7 @@ export class UsersController {
     type: ReturnedUserDTO,
   })
   @ApiResponse({ status: 404, description: 'Not Found: User not found' })
+  @ApiResponse({ status: 429, description: 'Too Many Requests' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async login(
     @Body(new ValidationPipe()) userDTO: LoginUserDTO,
@@ -98,6 +104,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   @HttpCode(200)
+  @SkipThrottle()
   @ApiOperation({ summary: "Retrieves the current user's information" })
   @ApiResponse({
     status: 200,
