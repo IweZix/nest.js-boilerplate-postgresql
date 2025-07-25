@@ -31,6 +31,9 @@
           "409": {
             "description": "Conflict: User with the same email already exists"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -69,6 +72,9 @@
           },
           "404": {
             "description": "Not Found: User not found"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
