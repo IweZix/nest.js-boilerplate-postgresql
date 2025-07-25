@@ -1,4 +1,6 @@
-// src/scripts/generateModule.js
+/**
+ * Script to generate a new module in a NestJS application.
+ */
 
 const { execSync } = require('child_process');
 const path = require('path');
