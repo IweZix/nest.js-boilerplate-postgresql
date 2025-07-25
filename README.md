@@ -45,7 +45,7 @@ A swagger file is generated at each start of the server to be used with orval or
 Create an empty module with the following command:
 
 ```bash
-nest g module <module_name>
+npm run generate-module <module_name>
 ```
 
 ```
@@ -55,7 +55,26 @@ src
         ├── DTO
         │   ├── received<DTO_name>.dto.ts
         │   └── returned<DTO_name>.dto.ts
+        ├── <module_name>.entity.ts
         ├── <module_name>.controller.ts
         ├── <module_name>.service.ts
         └── <module_name>.module.ts
+```
+
+In the <module_name>.module.ts file : 
+1. Import the <module_name>.entity.ts, DatabaseModule and TypeOrmModule
+2. Add and import array :
+```typescript
+import { DatabaseModule } from '../database/db.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { <module_name> } from './<module_name>.entity';
+
+@Module({
+  imports: [
+   TypeOrmModule.forFeature([<module_name>]),
+   DatabaseModule
+  ],
+  controllers: [<module_name>Controller],
+  providers: [<module_name>Service],
+})
 ```

@@ -43,9 +43,10 @@ const createCommands = [
 
 try {
   createCommands.forEach((cmd) => {
-    console.log(`▶️ ${cmd}`);
+    console.log(`\n▶️ ${cmd}`);
     execSync(cmd, { stdio: 'inherit' });
   });
+  
 
   if (!fs.existsSync(modulePath)) {
     fs.mkdirSync(modulePath, { recursive: true });
@@ -60,16 +61,21 @@ try {
     path.join(modulePath, `${moduleNameWithoutS}.entity.ts`),
     getEntityContent(finaleModuleName),
   );
+  console.log(`\n✅ Entity file created: ${moduleNameWithoutS}.entity.ts`);
+
   fs.writeFileSync(
     path.join(dtoDir, `received${finaleModuleName}.dto.ts`),
     getReceivedDtoContent(finaleModuleName),
   );
+  console.log(`✅ DTO file created: received${finaleModuleName}.dto.ts`);
+
   fs.writeFileSync(
     path.join(dtoDir, `returned${finaleModuleName}.dto.ts`),
     getReturnedDtoContent(finaleModuleName),
   );
+  console.log(`✅ DTO file created: returned${finaleModuleName}.dto.ts`);
 
-  console.log(`✅ Module "${moduleName}" généré dans ${targetPath}`);
+  console.log(`\n✅ Module "${moduleName}" generated in ${targetPath}`);
 } catch (error) {
-  console.error('❌ Erreur pendant la génération du module :', error.message);
+  console.error('❌ Error while generating module:', error.message);
 }
