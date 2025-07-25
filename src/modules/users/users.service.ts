@@ -111,4 +111,28 @@ export class UsersService {
       token,
     };
   }
+
+  async getMe(userId: number): Promise<ReturnedUserDTO> {
+    this.logger.log(
+      `entered in [${this.getMe.name}] function with userId: ${userId}`,
+    );
+
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      token: jwt.sign({ id: user.id }, this.JWT_SECRET, {
+        expiresIn: this.JWT_LIFETIME,
+      }),
+    };
+  }
 }

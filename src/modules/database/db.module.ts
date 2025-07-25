@@ -13,7 +13,7 @@ import { User } from 'src/modules/users/user.entity';
       password: config.password, // Remplacez avec votre mot de passe DB
       database: config.database, // Remplacez avec le nom de votre base de données
       entities: [User], // Recherche les entités dans tout le projet
-      synchronize: true, // Ne jamais utiliser en production !
+      synchronize: true, // Never use in production, it can lead to data loss
       // logging: true,
     }),
     TypeOrmModule.forFeature([User]),

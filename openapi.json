@@ -1,0 +1,221 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/users/register": {
+      "post": {
+        "operationId": "UsersController_register",
+        "summary": "Registers a new user by validating the received user data",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "User data transfer object containing user details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceivedUserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "return a ReturnedUserDTO",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict: User with the same email already exists"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "operationId": "UsersController_login",
+        "summary": "Logs in a user by verifying the email and password",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "User data transfer object containing email and password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return a ReturnedUserDTO",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "UsersController_getMe",
+        "summary": "Retrieves the current user's information",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "return a ReturnedUserDTO",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: User not authenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Chronos API",
+    "description": "API documentation for application",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "ReceivedUserDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Unique identifier for the user"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "John",
+            "description": "First name of the user"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Doe",
+            "description": "Last name of the user"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@chronos.dev",
+            "description": "Email address of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "Password for the user account"
+          }
+        },
+        "required": [
+          "id",
+          "firstname",
+          "lastname",
+          "email",
+          "password"
+        ]
+      },
+      "ReturnedUserDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Unique identifier for the user"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "John",
+            "description": "First name of the user"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Doe",
+            "description": "Last name of the user"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@chronos.dev"
+          },
+          "token": {
+            "type": "string",
+            "example": "mySuperToken",
+            "description": "Password for the user account"
+          }
+        },
+        "required": [
+          "id",
+          "firstname",
+          "lastname",
+          "email",
+          "token"
+        ]
+      },
+      "LoginUserDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john.doe@chronos.dev"
+          },
+          "password": {
+            "type": "string",
+            "example": "password1234",
+            "description": "Password for the user account"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      }
+    }
+  }
+}
