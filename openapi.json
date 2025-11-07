@@ -12,7 +12,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReceivedUserDTO"
+                "$ref": "#/components/schemas/AddUserDTO"
               }
             }
           }
@@ -115,8 +115,8 @@
     }
   },
   "info": {
-    "title": "Chronos API",
-    "description": "API documentation for application",
+    "title": "Nest.jsc Application",
+    "description": "API documentation for Nest.js Application",
     "version": "1.0",
     "contact": {}
   },
@@ -131,7 +131,7 @@
       }
     },
     "schemas": {
-      "ReceivedUserDTO": {
+      "AddUserDTO": {
         "type": "object",
         "properties": {
           "id": {
@@ -151,7 +151,7 @@
           },
           "email": {
             "type": "string",
-            "example": "john.doe@chronos.dev",
+            "example": "john.doe@nest.dev",
             "description": "Email address of the user"
           },
           "password": {
@@ -188,7 +188,7 @@
           },
           "email": {
             "type": "string",
-            "example": "john.doe@chronos.dev"
+            "example": "john.doe@nest.dev"
           },
           "token": {
             "type": "string",
@@ -209,7 +209,7 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "john.doe@chronos.dev"
+            "example": "john.doe@nest.dev"
           },
           "password": {
             "type": "string",

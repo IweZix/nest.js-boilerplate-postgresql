@@ -9,9 +9,9 @@ import {
   Get,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ReceivedUserDTO } from './DTO/receivedUser.dto';
-import { ReturnedUserDTO } from './DTO/returnedUser.dto';
-import { LoginUserDTO } from './DTO/loginUser.dto';
+import { AddUserDTO } from './DTO/add/add-user.dto';
+import { ReturnedUserDTO } from './DTO/user.dto';
+import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
@@ -42,7 +42,7 @@ export class UsersController {
     summary: 'Registers a new user by validating the received user data',
   })
   @ApiBody({
-    type: ReceivedUserDTO,
+    type: AddUserDTO,
     description: 'User data transfer object containing user details',
     required: true,
   })
@@ -58,7 +58,7 @@ export class UsersController {
   @ApiResponse({ status: 429, description: 'Too Many Requests' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async register(
-    @Body(new ValidationPipe()) userDTO: ReceivedUserDTO,
+    @Body(new ValidationPipe()) userDTO: AddUserDTO,
   ): Promise<ReturnedUserDTO> {
     this.logger.log(`entered in [${this.register.name}] function`);
     return await this.usersService.register(userDTO);

@@ -1,5 +1,5 @@
 {
-  "name": "chronos-backend",
+  "name": "Nest.js Application",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -39,6 +39,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.2",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.17",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
