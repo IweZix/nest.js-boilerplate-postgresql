@@ -23,7 +23,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             }
@@ -65,7 +65,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             }
@@ -96,7 +96,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             }
@@ -168,7 +168,7 @@
           "password"
         ]
       },
-      "ReturnedUserDTO": {
+      "UserDTO": {
         "type": "object",
         "properties": {
           "id": {

@@ -10,7 +10,7 @@ import * as jwt from 'jsonwebtoken';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ReturnedUserDTO } from './DTO/user.dto';
+import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { config } from 'src/utils/config';
 
@@ -34,7 +34,7 @@ export class UsersService {
    * @throws {ConflictException} - If a user with the same email already exists.
    * @throws {Error} - If there is an error during the function.
    */
-  async register(userDTO: AddUserDTO): Promise<ReturnedUserDTO> {
+  async register(userDTO: AddUserDTO): Promise<UserDTO> {
     this.logger.log(`entered in [${this.register.name}] function`);
 
     try {
@@ -56,7 +56,7 @@ export class UsersService {
 
       await this.userRepository.save(userToSave);
 
-      const returnedUser: ReturnedUserDTO = {
+      const returnedUser: UserDTO = {
         id: userToSave.id,
         firstname: userToSave.firstname,
         lastname: userToSave.lastname,
@@ -79,7 +79,7 @@ export class UsersService {
    * @return {Promise<ReturnedUserDTO>} - A promise that resolves to the returned
    * @throws {NotFoundException} - If the email or password is incorrect.
    */
-  async login(loginUserDTO: LoginUserDTO): Promise<ReturnedUserDTO> {
+  async login(loginUserDTO: LoginUserDTO): Promise<UserDTO> {
     this.logger.log(`entered in [${this.login.name}] function`);
 
     const user = await this.userRepository.findOne({
@@ -112,7 +112,7 @@ export class UsersService {
     };
   }
 
-  async getMe(userId: number): Promise<ReturnedUserDTO> {
+  async getMe(userId: number): Promise<UserDTO> {
     this.logger.log(
       `entered in [${this.getMe.name}] function with userId: ${userId}`,
     );

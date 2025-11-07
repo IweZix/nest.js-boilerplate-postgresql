@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AddUserDTO } from './DTO/add/add-user.dto';
-import { ReturnedUserDTO } from './DTO/user.dto';
+import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
@@ -49,7 +49,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'return a ReturnedUserDTO',
-    type: ReturnedUserDTO,
+    type: UserDTO,
   })
   @ApiResponse({
     status: 409,
@@ -59,7 +59,7 @@ export class UsersController {
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async register(
     @Body(new ValidationPipe()) userDTO: AddUserDTO,
-  ): Promise<ReturnedUserDTO> {
+  ): Promise<UserDTO> {
     this.logger.log(`entered in [${this.register.name}] function`);
     return await this.usersService.register(userDTO);
   }
@@ -84,14 +84,14 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'return a ReturnedUserDTO',
-    type: ReturnedUserDTO,
+    type: UserDTO,
   })
   @ApiResponse({ status: 404, description: 'Not Found: User not found' })
   @ApiResponse({ status: 429, description: 'Too Many Requests' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async login(
     @Body(new ValidationPipe()) userDTO: LoginUserDTO,
-  ): Promise<ReturnedUserDTO> {
+  ): Promise<UserDTO> {
     this.logger.log(`entered in [${this.login.name}] function`);
     return await this.usersService.login(userDTO);
   }
@@ -109,14 +109,14 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'return a ReturnedUserDTO',
-    type: ReturnedUserDTO,
+    type: UserDTO,
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized: User not authenticated',
   })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async getMe(@User('id') userId: number): Promise<ReturnedUserDTO> {
+  async getMe(@User('id') userId: number): Promise<UserDTO> {
     this.logger.log(`entered in [${this.getMe.name}] function`);
     return await this.usersService.getMe(userId);
   }
