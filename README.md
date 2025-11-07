@@ -78,3 +78,24 @@ import { <module_name> } from './<module_name>.entity';
   providers: [<module_name>Service],
 })
 ```
+
+## Database migrations
+To create a new database migration, use the following command:
+
+```bash
+npm run migration:generate --name=<migration_name>
+```
+
+This will generate a new migration file in the `src/modules/database/migrations` directory.
+
+To run pending migrations, use the command:
+
+```bash
+npm run migration:run
+```
+
+To revert the last executed migration, use the command:
+
+```bash
+npm run migration:revert
+```
