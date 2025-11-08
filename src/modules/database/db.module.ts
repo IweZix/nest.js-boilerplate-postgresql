@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from '../../utils/config';
 import { User } from 'src/modules/users/user.entity';
+import { join } from 'path/win32';
 
 @Module({
   imports: [
@@ -13,8 +14,8 @@ import { User } from 'src/modules/users/user.entity';
       password: config.password, // Remplacez avec votre mot de passe DB
       database: config.database, // Remplacez avec le nom de votre base de données
       entities: [User], // Recherche les entités dans tout le projet
-      migrations: ['src/modules/database/migrations/*.ts'],
-      synchronize: false, // Never true in production!
+      migrations: [join(__dirname, '../database/migrations/*{.ts,.js}')],
+      synchronize: true, // Never true in production!
       // logging: true,
     }),
     TypeOrmModule.forFeature([User]),

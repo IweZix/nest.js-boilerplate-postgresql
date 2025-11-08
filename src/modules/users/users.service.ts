@@ -13,6 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { config } from 'src/utils/config';
+// import { MailService } from '../mails/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -22,10 +23,15 @@ export class UsersService {
   private readonly JWT_SECRET: string = config.jwtSecret;
   private readonly JWT_LIFETIME: number = config.jwtLifetime;
 
+  // private readonly mailService: MailService;
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+    // mailService: MailService,
+  ) {
+    // this.mailService = mailService;
+  }
 
   /**
    * Registers a new user by hashing the password and saving the user to the database.
@@ -65,6 +71,8 @@ export class UsersService {
           expiresIn: this.JWT_LIFETIME,
         }),
       };
+
+      // this.mailService.sendWelcomeEmail(userToSave.email);
 
       return returnedUser;
     } catch (error) {
