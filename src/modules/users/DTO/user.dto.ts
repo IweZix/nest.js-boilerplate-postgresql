@@ -4,25 +4,21 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UserDTO {
   @ApiProperty({ example: 1, description: 'Unique identifier for the user' })
   @IsNumber()
-  id: number;
+  id?: number;
 
   @ApiProperty({ example: 'John', description: 'First name of the user' })
   @IsString()
-  @IsNotEmpty()
-  firstname: string;
+  firstname?: string;
 
   @ApiProperty({ example: 'Doe', description: 'Last name of the user' })
   @IsString()
-  @IsNotEmpty()
-  lastname: string;
+  lastname?: string;
 
   @ApiProperty({ example: 'john.doe@nest.dev' })
   @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  email?: string;
 
   @ApiProperty({ example: 'mySuperToken', description: 'Password for the user account' })
   @IsString()
-  @IsNotEmpty()
-  token: string;
+  token?: string;
 }
