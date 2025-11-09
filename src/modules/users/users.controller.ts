@@ -124,6 +124,10 @@ export class UsersController {
     return await this.usersService.getMe(userId);
   }
 
+  /**
+   * Retrieves all users in the system.
+   * @returns {Promise<UserDTO[]>} - A promise that resolves to an array of UserDTOs.
+   */
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
   @Get('all-users')
