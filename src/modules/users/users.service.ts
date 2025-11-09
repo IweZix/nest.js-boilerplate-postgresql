@@ -13,6 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { config } from 'src/utils/config';
+import { Role } from 'src/common/enums/role.enum';
 // import { MailService } from '../mails/mail.service';
 
 @Injectable()
@@ -58,6 +59,7 @@ export class UsersService {
       const userToSave: User = {
         ...userDTO,
         password: hashedPassword,
+        role: Role.USER,
       };
 
       await this.userRepository.save(userToSave);
@@ -67,9 +69,13 @@ export class UsersService {
         firstname: userToSave.firstname,
         lastname: userToSave.lastname,
         email: userToSave.email,
-        token: jwt.sign({ id: userToSave.id }, this.JWT_SECRET, {
-          expiresIn: this.JWT_LIFETIME,
-        }),
+        token: jwt.sign(
+          { id: userToSave.id, role: userToSave.role },
+          this.JWT_SECRET,
+          {
+            expiresIn: this.JWT_LIFETIME,
+          },
+        ),
       };
 
       // this.mailService.sendWelcomeEmail(userToSave.email);
@@ -107,7 +113,7 @@ export class UsersService {
       throw new NotFoundException('Email or password is incorrect');
     }
 
-    const token = jwt.sign({ id: user.id }, this.JWT_SECRET, {
+    const token = jwt.sign({ id: user.id, role: user.role }, this.JWT_SECRET, {
       expiresIn: this.JWT_LIFETIME,
     });
 
@@ -138,9 +144,22 @@ export class UsersService {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      token: jwt.sign({ id: user.id }, this.JWT_SECRET, {
+      token: jwt.sign({ id: user.id, role: user.role }, this.JWT_SECRET, {
         expiresIn: this.JWT_LIFETIME,
       }),
     };
+  }
+
+  async getAllUsers(): Promise<UserDTO[]> {
+    this.logger.log(`entered in [${this.getAllUsers.name}] function`);
+
+    const users = await this.userRepository.find();
+
+    return users.map((user) => ({
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+    }));
   }
 }

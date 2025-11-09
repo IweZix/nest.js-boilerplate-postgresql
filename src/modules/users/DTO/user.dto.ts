@@ -18,6 +18,10 @@ export class UserDTO {
   @IsEmail()
   email?: string;
 
+  @ApiProperty({ example: 100, description: 'Role of the user' })
+  @IsString()
+  role?: string;
+
   @ApiProperty({ example: 'mySuperToken', description: 'Password for the user account' })
   @IsString()
   token?: string;

@@ -17,6 +17,9 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { ThrottlerName } from 'src/constants/throttler-name';
+import { RolesGuard } from 'src/common/guards/role.guard';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { Role } from 'src/common/enums/role.enum';
 
 @ApiTags('Users')
 @Controller('users')
@@ -119,5 +122,26 @@ export class UsersController {
   async getMe(@User('id') userId: number): Promise<UserDTO> {
     this.logger.log(`entered in [${this.getMe.name}] function`);
     return await this.usersService.getMe(userId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @Get('all-users')
+  @Throttle({ [ThrottlerName.SHORT]: {} })
+  @ApiOperation({ summary: "Get all users" })
+  @ApiResponse({
+    status: 200,
+    description: 'return an array of UserDTO',
+    type: [UserDTO],
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized: User not authenticated',
+  })
+  @ApiResponse({ status: 429, description: 'Too Many Requests' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  async getAllUsers(): Promise<UserDTO[]> {
+    this.logger.log(`entered in [${this.getAllUsers.name}] function`);
+    return await this.usersService.getAllUsers();
   }
 }
