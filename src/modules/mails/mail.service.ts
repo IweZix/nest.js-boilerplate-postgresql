@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as sgMail from '@sendgrid/mail';
 
+/**
+ * MailService handles sending emails using SendGrid
+ */
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
