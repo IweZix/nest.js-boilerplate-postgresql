@@ -15,6 +15,7 @@ import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { config } from 'src/utils/config';
 import { Role } from 'src/common/enums/role.enum';
 import { JwtService } from 'src/services/jwt.service';
+import { BcryptService } from 'src/services/bcrypt.service';
 // import { MailService } from '../mails/mail.service';
 
 @Injectable()
@@ -22,8 +23,6 @@ export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
   private readonly SALT_ROUNDS: number = config.saltRounds;
-  private readonly JWT_SECRET: string = config.jwtSecret;
-  private readonly JWT_LIFETIME: number = config.jwtLifetime;
 
   // private readonly mailService: MailService;
 
@@ -31,6 +30,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly bcryptService: BcryptService,
     // mailService: MailService,
   ) {
     // this.mailService = mailService;
@@ -54,13 +54,9 @@ export class UsersService {
         throw new ConflictException('User already exists');
       }
 
-      const hashedPassword = await bcrypt.hash(
-        userDTO.password,
-        this.SALT_ROUNDS,
-      );
       const userToSave: User = {
         ...userDTO,
-        password: hashedPassword,
+        password: await this.bcryptService.hashPassword(userDTO.password),
         role: Role.USER,
       };
 
@@ -100,7 +96,7 @@ export class UsersService {
       throw new NotFoundException('Email or password is incorrect');
     }
 
-    const isPasswordValid = await bcrypt.compare(
+    const isPasswordValid = await this.bcryptService.comparePasswords(
       loginUserDTO.password,
       user.password,
     );
