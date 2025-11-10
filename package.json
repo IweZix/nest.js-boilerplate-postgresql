@@ -1,5 +1,5 @@
 {
-  "name": "chronos-backend",
+  "name": "Nest.js Application",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -19,6 +19,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "npx typeorm-ts-node-commonjs migration:generate -d src/modules/database/data-source.ts src/modules/database/migrations/$npm_config_name",
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d src/modules/database/data-source.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d src/modules/database/data-source.ts",
+    "migration:show": "npx typeorm-ts-node-commonjs migration:show -d src/modules/database/data-source.ts",
     "generate-module": "node src/scripts/generateModule.js"
   },
   "dependencies": {
@@ -28,6 +32,7 @@
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/throttler": "^6.4.0",
     "@nestjs/typeorm": "^10.0.0",
+    "@sendgrid/mail": "^8.1.6",
     "axios": "^1.7.9",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
@@ -39,6 +44,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.2",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.17",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"

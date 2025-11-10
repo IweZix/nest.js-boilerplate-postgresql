@@ -5,7 +5,7 @@ services:
     image: node:18
     container_name: nestjs
     ports:
-      - '6001:6001'
+      - '6000:6000'
     volumes:
       - ./:/back
       - /back/node_modules

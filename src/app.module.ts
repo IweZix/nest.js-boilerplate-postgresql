@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { UsersModule } from './modules/users/users.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsersModule } from './modules/users/users.module';
         limit: 100
       }
     ]),
+    ServicesModule,
     UsersModule,
   ],
   controllers: [],

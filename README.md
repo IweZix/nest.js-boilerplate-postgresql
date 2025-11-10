@@ -11,6 +11,8 @@ A swagger file is generated at each start of the server to be used with orval or
 - Validation using class-validator
 - Swagger documentation
 - PostgreSQL database integration
+- TypeORM for database interactions
+- SendGrid integration for sending emails
 
 ## Installation
 
@@ -34,11 +36,11 @@ A swagger file is generated at each start of the server to be used with orval or
 
 ## Usage
 
-| URI             | Méthode | Body            | Authorization | Action                       |
-| :-------------- | :------ | :-------------- | :------------ | :--------------------------- |
-| /users/login    | POST    | ReceivedUserDTO | N/A           | LOGIN : login a user         |
-| /users/register | POST    | LoginUserDTO    | N/A           | CREATE ONE : add one user    |
-| /users/me       | GET     | N/A             | JwtAuthGuard  | VERIFY : verify a user token |
+| URI             | Méthode | Body         | Authorization | Action                       |
+| :-------------- | :------ | :----------- | :------------ | :--------------------------- |
+| /users/login    | POST    | loginUserDTO | N/A           | LOGIN : login a user         |
+| /users/register | POST    | addUserDTO   | N/A           | CREATE ONE : add one user    |
+| /users/me       | GET     | N/A          | JwtAuthGuard  | VERIFY : verify a user token |
 
 ## New module ?
 
@@ -61,9 +63,11 @@ src
         └── <module_name>.module.ts
 ```
 
-In the <module_name>.module.ts file : 
+In the <module_name>.module.ts file :
+
 1. Import the <module_name>.entity.ts, DatabaseModule and TypeOrmModule
 2. Add and import array :
+
 ```typescript
 import { DatabaseModule } from '../database/db.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -77,4 +81,26 @@ import { <module_name> } from './<module_name>.entity';
   controllers: [<module_name>Controller],
   providers: [<module_name>Service],
 })
+```
+
+## Database migrations
+
+To create a new database migration, use the following command:
+
+```bash
+npm run migration:generate --name=<migration_name>
+```
+
+This will generate a new migration file in the `src/modules/database/migrations` directory.
+
+To run pending migrations, use the command:
+
+```bash
+npm run migration:run
+```
+
+To revert the last executed migration, use the command:
+
+```bash
+npm run migration:revert
 ```

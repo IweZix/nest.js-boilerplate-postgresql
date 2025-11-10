@@ -12,7 +12,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReceivedUserDTO"
+                "$ref": "#/components/schemas/AddUserDTO"
               }
             }
           }
@@ -23,7 +23,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             }
@@ -65,7 +65,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             }
@@ -96,7 +96,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReturnedUserDTO"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             }
@@ -112,11 +112,45 @@
           "Users"
         ]
       }
+    },
+    "/users/all-users": {
+      "get": {
+        "operationId": "UsersController_getAllUsers",
+        "summary": "Get all users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "return an array of UserDTO",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: User not authenticated"
+          },
+          "429": {
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
     }
   },
   "info": {
-    "title": "Chronos API",
-    "description": "API documentation for application",
+    "title": "Nest.jsc Application",
+    "description": "API documentation for Nest.js Application",
     "version": "1.0",
     "contact": {}
   },
@@ -131,7 +165,7 @@
       }
     },
     "schemas": {
-      "ReceivedUserDTO": {
+      "AddUserDTO": {
         "type": "object",
         "properties": {
           "id": {
@@ -151,7 +185,7 @@
           },
           "email": {
             "type": "string",
-            "example": "john.doe@chronos.dev",
+            "example": "john.doe@nest.dev",
             "description": "Email address of the user"
           },
           "password": {
@@ -168,7 +202,7 @@
           "password"
         ]
       },
-      "ReturnedUserDTO": {
+      "UserDTO": {
         "type": "object",
         "properties": {
           "id": {
@@ -188,7 +222,12 @@
           },
           "email": {
             "type": "string",
-            "example": "john.doe@chronos.dev"
+            "example": "john.doe@nest.dev"
+          },
+          "role": {
+            "type": "string",
+            "example": 100,
+            "description": "Role of the user"
           },
           "token": {
             "type": "string",
@@ -201,6 +240,7 @@
           "firstname",
           "lastname",
           "email",
+          "role",
           "token"
         ]
       },
@@ -209,7 +249,7 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "john.doe@chronos.dev"
+            "example": "john.doe@nest.dev"
           },
           "password": {
             "type": "string",
