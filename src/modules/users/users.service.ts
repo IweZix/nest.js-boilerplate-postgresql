@@ -14,6 +14,7 @@ import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { config } from 'src/utils/config';
 import { Role } from 'src/common/enums/role.enum';
+import { JwtService } from 'src/services/jwt.service';
 // import { MailService } from '../mails/mail.service';
 
 @Injectable()
@@ -29,6 +30,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
     // mailService: MailService,
   ) {
     // this.mailService = mailService;
@@ -69,13 +71,7 @@ export class UsersService {
         firstname: userToSave.firstname,
         lastname: userToSave.lastname,
         email: userToSave.email,
-        token: jwt.sign(
-          { id: userToSave.id, role: userToSave.role },
-          this.JWT_SECRET,
-          {
-            expiresIn: this.JWT_LIFETIME,
-          },
-        ),
+        token: await this.jwtService.signToken(userToSave.id, userToSave.role),
       };
 
       // this.mailService.sendWelcomeEmail(userToSave.email);
@@ -113,9 +109,7 @@ export class UsersService {
       throw new NotFoundException('Email or password is incorrect');
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, this.JWT_SECRET, {
-      expiresIn: this.JWT_LIFETIME,
-    });
+    const token = await this.jwtService.signToken(user.id, user.role);
 
     return {
       id: user.id,
@@ -144,9 +138,7 @@ export class UsersService {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      token: jwt.sign({ id: user.id, role: user.role }, this.JWT_SECRET, {
-        expiresIn: this.JWT_LIFETIME,
-      }),
+      token: await this.jwtService.signToken(user.id, user.role),
     };
   }
 
