@@ -16,25 +16,19 @@ import { config } from 'src/utils/config';
 import { Role } from 'src/common/enums/role.enum';
 import { JwtService } from 'src/services/jwt.service';
 import { BcryptService } from 'src/services/bcrypt.service';
-// import { MailService } from '../mails/mail.service';
+// import { MailService } from 'src/services/mail.service';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
-
-  private readonly SALT_ROUNDS: number = config.saltRounds;
-
-  // private readonly mailService: MailService;
 
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
-    // mailService: MailService,
-  ) {
-    // this.mailService = mailService;
-  }
+    // private readonly mailService: MailService,
+  ) {}
 
   /**
    * Registers a new user by hashing the password and saving the user to the database.
