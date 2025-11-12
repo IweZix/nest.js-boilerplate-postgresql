@@ -22,9 +22,9 @@ Content-Type: application/json
 ### Requête pour récupérer les informations de l'utilisateur connecté
 GET http://localhost:3000/users/me HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MjAwLCJpYXQiOjE3NjI4MDM2MTUsImV4cCI6MTc2MjgwNzIxNX0.TT4d0RFn9YkcEa8vd_TmtPUoozcBy0PN9qrPQ9Qf_4w
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOjIwMCwiaWF0IjoxNzYyOTY5Mzk5LCJleHAiOjE3NjI5NzI5OTl9.hDbqkw-wTKp9A_KzhULaackzdsMzLUgN7KJjMqLZTGI
 
 ### Requête pour récupérer la liste de tous les utilisateurs (accessible uniquement aux administrateurs)
 GET http://localhost:3000/users/all-users HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MjAwLCJpYXQiOjE3NjI4MDM2MTUsImV4cCI6MTc2MjgwNzIxNX0.TT4d0RFn9YkcEa8vd_TmtPUoozcBy0PN9qrPQ9Qf_4w
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOjIwMCwiaWF0IjoxNzYyOTY5Mzk5LCJleHAiOjE3NjI5NzI5OTl9.hDbqkw-wTKp9A_KzhULaackzdsMzLUgN7KJjMqLZTGI

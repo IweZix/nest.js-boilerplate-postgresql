@@ -5,17 +5,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AddUserDTO } from './DTO/add/add-user.dto';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
-import { config } from 'src/utils/config';
 import { Role } from 'src/common/enums/role.enum';
 import { JwtService } from 'src/services/jwt.service';
 import { BcryptService } from 'src/services/bcrypt.service';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
 // import { MailService } from 'src/services/mail.service';
 
 @Injectable()
@@ -25,6 +24,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectMapper() private readonly mapper: Mapper,
     private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
     // private readonly mailService: MailService,
@@ -56,13 +56,11 @@ export class UsersService {
 
       await this.userRepository.save(userToSave);
 
-      const returnedUser: UserDTO = {
-        id: userToSave.id,
-        firstname: userToSave.firstname,
-        lastname: userToSave.lastname,
-        email: userToSave.email,
-        token: await this.jwtService.signToken(userToSave.id, userToSave.role),
-      };
+      const returnedUser: UserDTO = this.mapper.map(userToSave, User, UserDTO);
+      returnedUser.token = await this.jwtService.signToken(
+        userToSave.id,
+        userToSave.role,
+      );
 
       // this.mailService.sendWelcomeEmail(userToSave.email);
 
@@ -101,13 +99,10 @@ export class UsersService {
 
     const token = await this.jwtService.signToken(user.id, user.role);
 
-    return {
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      token,
-    };
+    const returnedUser: UserDTO = this.mapper.map(user, User, UserDTO);
+    returnedUser.token = token;
+
+    return returnedUser;
   }
 
   async getMe(userId: number): Promise<UserDTO> {
@@ -123,13 +118,10 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return {
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      token: await this.jwtService.signToken(user.id, user.role),
-    };
+    const returnedUser: UserDTO = this.mapper.map(user, User, UserDTO);
+    returnedUser.token = await this.jwtService.signToken(user.id, user.role);
+
+    return returnedUser;
   }
 
   async getAllUsers(): Promise<UserDTO[]> {
@@ -137,11 +129,6 @@ export class UsersService {
 
     const users = await this.userRepository.find();
 
-    return users.map((user) => ({
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-    }));
+    return this.mapper.mapArray(users, User, UserDTO);
   }
 }
