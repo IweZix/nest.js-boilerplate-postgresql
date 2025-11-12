@@ -225,7 +225,7 @@
             "example": "john.doe@nest.dev"
           },
           "role": {
-            "type": "string",
+            "type": "number",
             "example": 100,
             "description": "Role of the user"
           },

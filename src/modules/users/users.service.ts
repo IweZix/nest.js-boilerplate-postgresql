@@ -66,7 +66,7 @@ export class UsersService {
 
       return returnedUser;
     } catch (error) {
-      this.logger.error(`Error hashing password: ${error.message}`);
+      this.logger.error(error.message);
       throw error;
     }
   }
