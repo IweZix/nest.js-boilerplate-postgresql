@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { AutomapperModule } from '@automapper/nestjs';
+import { classes } from '@automapper/classes';
 import { UsersModule } from './modules/users/users.module';
 import { ServicesModule } from './services/services.module';
 
@@ -15,14 +17,17 @@ import { ServicesModule } from './services/services.module';
       {
         name: 'medium',
         ttl: 10000,
-        limit: 20
+        limit: 20,
       },
       {
         name: 'long',
         ttl: 60000,
-        limit: 100
-      }
+        limit: 100,
+      },
     ]),
+    AutomapperModule.forRoot({
+      strategyInitializer: classes(),
+    }),
     ServicesModule,
     UsersModule,
   ],

@@ -31,6 +31,10 @@ export class UsersController {
     this.usersService = usersService;
   }
 
+  /********/
+  /* AUTH */
+  /********/
+
   /**
    * Registers a new user by validating the received user data and returning a JWT token.
    * @param {ReceivedUserDTO} userDTO - The user data transfer object containing user details.
@@ -124,6 +128,10 @@ export class UsersController {
     return await this.usersService.getMe(userId);
   }
 
+  /*********/
+  /* USERS */
+  /*********/
+
   /**
    * Retrieves all users in the system.
    * @returns {Promise<UserDTO[]>} - A promise that resolves to an array of UserDTOs.
@@ -132,7 +140,7 @@ export class UsersController {
   @Roles(Role.ADMIN, Role.USER)
   @Get('all-users')
   @Throttle({ [ThrottlerName.SHORT]: {} })
-  @ApiOperation({ summary: "Get all users" })
+  @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
     description: 'return an array of UserDTO',

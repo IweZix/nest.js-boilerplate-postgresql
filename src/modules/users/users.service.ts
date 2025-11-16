@@ -5,36 +5,34 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AddUserDTO } from './DTO/add/add-user.dto';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './DTO/user.dto';
 import { LoginUserDTO } from './DTO/other/login-user.dto';
-import { config } from 'src/utils/config';
 import { Role } from 'src/common/enums/role.enum';
 import { JwtService } from 'src/services/jwt.service';
 import { BcryptService } from 'src/services/bcrypt.service';
-// import { MailService } from '../mails/mail.service';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+// import { MailService } from 'src/services/mail.service';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
-  private readonly SALT_ROUNDS: number = config.saltRounds;
-
-  // private readonly mailService: MailService;
-
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectMapper() private readonly mapper: Mapper,
     private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
-    // mailService: MailService,
-  ) {
-    // this.mailService = mailService;
-  }
+    // private readonly mailService: MailService,
+  ) {}
+
+  /********/
+  /* AUTH */
+  /********/
 
   /**
    * Registers a new user by hashing the password and saving the user to the database.
@@ -62,19 +60,17 @@ export class UsersService {
 
       await this.userRepository.save(userToSave);
 
-      const returnedUser: UserDTO = {
-        id: userToSave.id,
-        firstname: userToSave.firstname,
-        lastname: userToSave.lastname,
-        email: userToSave.email,
-        token: await this.jwtService.signToken(userToSave.id, userToSave.role),
-      };
+      const returnedUser: UserDTO = this.mapper.map(userToSave, User, UserDTO);
+      returnedUser.token = await this.jwtService.signToken(
+        userToSave.id,
+        userToSave.role,
+      );
 
       // this.mailService.sendWelcomeEmail(userToSave.email);
 
       return returnedUser;
     } catch (error) {
-      this.logger.error(`Error hashing password: ${error.message}`);
+      this.logger.error(error.message);
       throw error;
     }
   }
@@ -107,15 +103,18 @@ export class UsersService {
 
     const token = await this.jwtService.signToken(user.id, user.role);
 
-    return {
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      token,
-    };
+    const returnedUser: UserDTO = this.mapper.map(user, User, UserDTO);
+    returnedUser.token = token;
+
+    return returnedUser;
   }
 
+  /**
+   * Retrieves the details of the currently authenticated user.
+   * @param {number} userId - The ID of the user to retrieve.
+   * @returns {Promise<ReturnedUserDTO>} - The returned user DTO containing user details.
+   * @throws {NotFoundException} - If the user is not found.
+   */
   async getMe(userId: number): Promise<UserDTO> {
     this.logger.log(
       `entered in [${this.getMe.name}] function with userId: ${userId}`,
@@ -129,25 +128,25 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return {
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      token: await this.jwtService.signToken(user.id, user.role),
-    };
+    const returnedUser: UserDTO = this.mapper.map(user, User, UserDTO);
+    returnedUser.token = await this.jwtService.signToken(user.id, user.role);
+
+    return returnedUser;
   }
 
+  /*********/
+  /* USERS */
+  /*********/
+
+  /**
+   * Retrieves all users in the system.
+   * @returns {Promise<UserDTO[]>} - A promise that resolves to an array of UserDTOs.
+   */
   async getAllUsers(): Promise<UserDTO[]> {
     this.logger.log(`entered in [${this.getAllUsers.name}] function`);
 
     const users = await this.userRepository.find();
 
-    return users.map((user) => ({
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-    }));
+    return this.mapper.mapArray(users, User, UserDTO);
   }
 }

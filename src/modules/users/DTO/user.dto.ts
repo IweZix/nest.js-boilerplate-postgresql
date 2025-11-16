@@ -1,5 +1,6 @@
 import { IsString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from 'src/common/enums/role.enum';
 
 export class UserDTO {
   @ApiProperty({ example: 1, description: 'Unique identifier for the user' })
@@ -20,7 +21,7 @@ export class UserDTO {
 
   @ApiProperty({ example: 100, description: 'Role of the user' })
   @IsString()
-  role?: string;
+  role?: Role;
 
   @ApiProperty({ example: 'mySuperToken', description: 'Password for the user account' })
   @IsString()
