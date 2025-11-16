@@ -30,6 +30,10 @@ export class UsersService {
     // private readonly mailService: MailService,
   ) {}
 
+  /********/
+  /* AUTH */
+  /********/
+
   /**
    * Registers a new user by hashing the password and saving the user to the database.
    * @param {AddUserDTO} userDTO - The user data transfer object containing user details.
@@ -105,6 +109,12 @@ export class UsersService {
     return returnedUser;
   }
 
+  /**
+   * Retrieves the details of the currently authenticated user.
+   * @param {number} userId - The ID of the user to retrieve.
+   * @returns {Promise<ReturnedUserDTO>} - The returned user DTO containing user details.
+   * @throws {NotFoundException} - If the user is not found.
+   */
   async getMe(userId: number): Promise<UserDTO> {
     this.logger.log(
       `entered in [${this.getMe.name}] function with userId: ${userId}`,
@@ -124,6 +134,14 @@ export class UsersService {
     return returnedUser;
   }
 
+  /*********/
+  /* USERS */
+  /*********/
+
+  /**
+   * Retrieves all users in the system.
+   * @returns {Promise<UserDTO[]>} - A promise that resolves to an array of UserDTOs.
+   */
   async getAllUsers(): Promise<UserDTO[]> {
     this.logger.log(`entered in [${this.getAllUsers.name}] function`);
 
