@@ -56,6 +56,10 @@ export class UsersService {
         ...userDTO,
         password: await this.bcryptService.hashPassword(userDTO.password),
         role: Role.USER,
+        createdAt: new Date(),
+        createdBy: userDTO.firstname + ' ' + userDTO.lastname,
+        updatedAt: null,
+        updatedBy: null,
       };
 
       await this.userRepository.save(userToSave);

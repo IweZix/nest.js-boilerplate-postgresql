@@ -1,8 +1,9 @@
 import { IsString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/common/enums/role.enum';
+import { BaseDTO } from 'src/common/DTO/base.dto';
 
-export class UserDTO {
+export class UserDTO extends BaseDTO {
   @ApiProperty({ example: 1, description: 'Unique identifier for the user' })
   @IsNumber()
   id?: number;

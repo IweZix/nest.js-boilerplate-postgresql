@@ -205,6 +205,28 @@
       "UserDTO": {
         "type": "object",
         "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-12-02T19:39:51.658Z",
+            "description": "Creation timestamp"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "system",
+            "description": "Creator of the entity"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-12-02T19:39:51.659Z",
+            "description": "Last update timestamp"
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "system",
+            "description": "Last updater of the entity"
+          },
           "id": {
             "type": "number",
             "example": 1,
@@ -236,6 +258,10 @@
           }
         },
         "required": [
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
           "id",
           "firstname",
           "lastname",

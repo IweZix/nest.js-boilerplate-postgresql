@@ -36,6 +36,22 @@ export class UserProfile extends AutomapperProfile {
           (d) => d.token,
           mapFrom(() => undefined), // Token will be set separately
         ),
+        forMember(
+          (d) => d.createdAt,
+          mapFrom((s) => s.createdAt),
+        ),
+        forMember(
+          (d) => d.createdBy,
+          mapFrom((s) => s.createdBy),
+        ),
+        forMember(
+          (d) => d.updatedAt,
+          mapFrom((s) => s.updatedAt),
+        ),
+        forMember(
+          (d) => d.updatedBy,
+          mapFrom((s) => s.updatedBy),
+        ),
       );
     };
   }
