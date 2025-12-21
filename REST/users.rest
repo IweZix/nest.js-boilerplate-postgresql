@@ -25,6 +25,6 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MjAwLCJpYXQiOjE3NjQ2Nzg4NjYsImV4cCI6MTc2NDY4MjQ2Nn0.5ixNSnO74xgVuUG4LfXFvlFoKuygWxKhKrtkB4G50f8
 
 ### Requête pour récupérer la liste de tous les utilisateurs (accessible uniquement aux administrateurs)
-GET http://localhost:3000/users/all-users HTTP/1.1
+GET http://localhost:3000/users/all-users?page=1&limit=3 HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MjAwLCJpYXQiOjE3NjQ2Nzg4NjYsImV4cCI6MTc2NDY4MjQ2Nn0.5ixNSnO74xgVuUG4LfXFvlFoKuygWxKhKrtkB4G50f8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6MjAwLCJpYXQiOjE3NjYzNDM5OTEsImV4cCI6MTc2NjM0NzU5MX0.sBDzAjrvFz5qNMKo-fArdYNbQzPGsBvLAbEG8yfcQkI

@@ -208,7 +208,7 @@
           "createdAt": {
             "format": "date-time",
             "type": "string",
-            "example": "2025-12-02T19:39:51.658Z",
+            "example": "2025-12-21T19:15:59.336Z",
             "description": "Creation timestamp"
           },
           "createdBy": {
@@ -219,7 +219,7 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string",
-            "example": "2025-12-02T19:39:51.659Z",
+            "example": "2025-12-21T19:15:59.337Z",
             "description": "Last update timestamp"
           },
           "updatedBy": {
