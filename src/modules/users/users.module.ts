@@ -4,7 +4,6 @@ import { UsersService } from './users.service';
 import { DatabaseModule } from '../database/db.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { UserProfile } from 'src/profiles/user.profile';
 
 // typeOrmModule is used to connect to the database and manage the User entity and automatically create the necessary database tables.
 // DatabaseModule is imported to handle database connections and configurations.
@@ -12,6 +11,6 @@ import { UserProfile } from 'src/profiles/user.profile';
 @Module({
   imports: [TypeOrmModule.forFeature([User]), DatabaseModule],
   controllers: [UsersController],
-  providers: [UsersService, UserProfile],
+  providers: [UsersService],
 })
 export class UsersModule {}

@@ -6,7 +6,7 @@ Content-Type: application/json
   "id": 0,
   "firstname": "John",
   "lastname": "Doe",
-  "email": "john.doe@yopmail.com",
+  "email": "john.doe2@yopmail.com",
   "password": "securepassword123"
 }
 
@@ -15,16 +15,16 @@ POST http://localhost:3000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "john.doe@yopmail.com",
+  "email": "john.doe2@yopmail.com",
   "password": "securepassword123"
 }
 
 ### Requête pour récupérer les informations de l'utilisateur connecté
 GET http://localhost:3000/users/me HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6MjAwLCJpYXQiOjE3NjQ2Nzg4NjYsImV4cCI6MTc2NDY4MjQ2Nn0.5ixNSnO74xgVuUG4LfXFvlFoKuygWxKhKrtkB4G50f8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOjIwMCwiaWF0IjoxNzcwOTI1MDY0LCJleHAiOjE3NzA5Mjg2NjR9.fwMUEBqTc9JH1ofwh40OxseaSf0CFTxJ5y1v3Zoeyig
 
 ### Requête pour récupérer la liste de tous les utilisateurs (accessible uniquement aux administrateurs)
 GET http://localhost:3000/users/all-users?page=1&limit=3 HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6MjAwLCJpYXQiOjE3NjYzNDM5OTEsImV4cCI6MTc2NjM0NzU5MX0.sBDzAjrvFz5qNMKo-fArdYNbQzPGsBvLAbEG8yfcQkI
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOjIwMCwiaWF0IjoxNzcwOTI1MDY0LCJleHAiOjE3NzA5Mjg2NjR9.fwMUEBqTc9JH1ofwh40OxseaSf0CFTxJ5y1v3Zoeyig

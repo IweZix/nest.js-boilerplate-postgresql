@@ -13,7 +13,6 @@ import { LoginUserDTO } from './DTO/other/login-user.dto';
 import { Role } from 'src/common/enums/role.enum';
 import { JwtService } from 'src/services/jwt.service';
 import { BcryptService } from 'src/services/bcrypt.service';
-import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { PaginatedResult, PaginationDTO } from 'src/helpers/pagination/pagination.dto';
 // import { MailService } from 'src/services/mail.service';
@@ -25,7 +24,6 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectMapper() private readonly mapper: Mapper,
     private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
     // private readonly mailService: MailService,
@@ -65,7 +63,7 @@ export class UsersService {
 
       await this.userRepository.save(userToSave);
 
-      const returnedUser: UserDTO = this.mapper.map(userToSave, User, UserDTO);
+      const returnedUser: UserDTO = { ...userToSave };
       returnedUser.token = await this.jwtService.signToken(
         userToSave.id,
         userToSave.role,
@@ -108,7 +106,7 @@ export class UsersService {
 
     const token = await this.jwtService.signToken(user.id, user.role);
 
-    const returnedUser: UserDTO = this.mapper.map(user, User, UserDTO);
+    const returnedUser: UserDTO = { ...user };
     returnedUser.token = token;
 
     return returnedUser;
@@ -133,7 +131,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    const returnedUser: UserDTO = this.mapper.map(user, User, UserDTO);
+    const returnedUser: UserDTO = { ...user };
     returnedUser.token = await this.jwtService.signToken(user.id, user.role);
 
     return returnedUser;
@@ -164,7 +162,7 @@ export class UsersService {
     });
 
     return {
-      data: this.mapper.mapArray(users, User, UserDTO),
+      data: users.map(user => ({ ...user })),
       meta: {
         total,
         page,
