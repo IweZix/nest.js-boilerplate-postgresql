@@ -14,3 +14,14 @@ export const AppDataSource = new DataSource({
   migrations: ['src/modules/database/migrations/*.ts'],
   synchronize: false,
 });
+
+/**
+ * Intialize the DataSource if it is not already initialized.
+ * This is necessary because better-auth needs to access the database connection,
+ * and we want to ensure that it is initialized before better-auth tries to use it.
+ */
+export const InitializeDataSource = async () => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+};

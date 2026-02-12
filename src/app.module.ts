@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { classes } from '@automapper/classes';
 import { UsersModule } from './modules/users/users.module';
 import { ServicesModule } from './services/services.module';
 
