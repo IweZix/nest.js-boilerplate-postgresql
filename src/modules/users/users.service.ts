@@ -15,6 +15,7 @@ import { JwtService } from 'src/services/jwt.service';
 import { BcryptService } from 'src/services/bcrypt.service';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
+import { PaginatedResult, PaginationDTO } from 'src/helpers/pagination/pagination.dto';
 // import { MailService } from 'src/services/mail.service';
 
 @Injectable()
@@ -56,6 +57,10 @@ export class UsersService {
         ...userDTO,
         password: await this.bcryptService.hashPassword(userDTO.password),
         role: Role.USER,
+        createdAt: new Date(),
+        createdBy: userDTO.firstname + ' ' + userDTO.lastname,
+        updatedAt: null,
+        updatedBy: null,
       };
 
       await this.userRepository.save(userToSave);
@@ -142,11 +147,30 @@ export class UsersService {
    * Retrieves all users in the system.
    * @returns {Promise<UserDTO[]>} - A promise that resolves to an array of UserDTOs.
    */
-  async getAllUsers(): Promise<UserDTO[]> {
+  async getAllUsers(
+    pagination: PaginationDTO,
+  ): Promise<PaginatedResult<UserDTO>> {
     this.logger.log(`entered in [${this.getAllUsers.name}] function`);
 
-    const users = await this.userRepository.find();
+    // default 1, 10 if not provided
+    const { page = 1, limit = 10 } = pagination;
 
-    return this.mapper.mapArray(users, User, UserDTO);
+    const [users, total] = await this.userRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return {
+      data: this.mapper.mapArray(users, User, UserDTO),
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 }

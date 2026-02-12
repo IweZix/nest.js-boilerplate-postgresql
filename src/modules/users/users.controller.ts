@@ -7,6 +7,7 @@ import {
   ValidationPipe,
   UseGuards,
   Get,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AddUserDTO } from './DTO/add/add-user.dto';
@@ -20,6 +21,10 @@ import { ThrottlerName } from 'src/constants/throttler-name';
 import { RolesGuard } from 'src/common/guards/role.guard';
 import { Roles } from 'src/common/decorators/role.decorator';
 import { Role } from 'src/common/enums/role.enum';
+import {
+  PaginatedResult,
+  PaginationDTO,
+} from 'src/helpers/pagination/pagination.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -152,8 +157,10 @@ export class UsersController {
   })
   @ApiResponse({ status: 429, description: 'Too Many Requests' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  async getAllUsers(): Promise<UserDTO[]> {
+  async getAllUsers(
+    @Query() pagination: PaginationDTO,
+  ): Promise<PaginatedResult<UserDTO>> {
     this.logger.log(`entered in [${this.getAllUsers.name}] function`);
-    return await this.usersService.getAllUsers();
+    return await this.usersService.getAllUsers(pagination);
   }
 }
