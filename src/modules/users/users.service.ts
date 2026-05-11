@@ -57,22 +57,22 @@ export class UsersService {
         role: Role.USER,
         createdAt: new Date(),
         createdBy: userDTO.firstname + ' ' + userDTO.lastname,
-        updatedAt: null,
-        updatedBy: null,
+        updatedAt: new Date(),
+        updatedBy: '',
       };
 
       await this.userRepository.save(userToSave);
 
       const returnedUser: UserDTO = { ...userToSave };
       returnedUser.token = await this.jwtService.signToken(
-        userToSave.id,
-        userToSave.role,
+        userToSave.id!,
+        userToSave.role!,
       );
 
       // this.mailService.sendWelcomeEmail(userToSave.email);
 
       return returnedUser;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message);
       throw error;
     }
@@ -97,14 +97,14 @@ export class UsersService {
 
     const isPasswordValid = await this.bcryptService.comparePasswords(
       loginUserDTO.password,
-      user.password,
+      user.password!,
     );
 
     if (!isPasswordValid) {
       throw new NotFoundException('Email or password is incorrect');
     }
 
-    const token = await this.jwtService.signToken(user.id, user.role);
+    const token = await this.jwtService.signToken(user.id!, user.role!);
 
     const returnedUser: UserDTO = { ...user };
     returnedUser.token = token;
@@ -132,7 +132,7 @@ export class UsersService {
     }
 
     const returnedUser: UserDTO = { ...user };
-    returnedUser.token = await this.jwtService.signToken(user.id, user.role);
+    returnedUser.token = await this.jwtService.signToken(user.id!, user.role!);
 
     return returnedUser;
   }

@@ -5,10 +5,10 @@ export class LoginUserDTO {
   @ApiProperty({ example: 'john.doe@nest.dev' })
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'password1234', description: 'Password for the user account' })
   @IsString()
   @IsNotEmpty()
-  password: string;
+  password!: string;
 }

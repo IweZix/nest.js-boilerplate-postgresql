@@ -5,20 +5,20 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
-  firstname: string;
+  firstname?: string;
 
   @Column()
-  lastname: string;
+  lastname?: string;
 
   @Column()
-  email: string;
+  email?: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @Column()
-  role: Role;
+  role?: Role;
 }
